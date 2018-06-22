@@ -76,7 +76,7 @@ class Diu:
             self.__group.send_msg(f'吨吨吨，鱼某HP +{heal_hp:d}，鱼某剩余HP {rest_hp:d}')
 
     def diu_yu_mou(self, msg: Message):
-        if msg.text in constant.SKILL_NAME:
+        if msg.text in constant.SKILL_NAME.values():
             if self.__yumou.is_dead():
                 self.__group.send_msg('鱼某已死')
                 return
@@ -116,8 +116,8 @@ class Diu:
                 diuer.upgrade()
                 res_msg += f'，升级了，攻击力+1，当前 {diuer.get_attack():d}'
             if random.randint(0, 100) < (1 - pow(1 - constant.SKILL_RATE, constant.DIU_MAX)) * 100:
-                diuer.add_skill()
-                res_msg += f'，获得了技能点，当前 {diuer.get_skill():d}点'
+                diuer.add_skill_point()
+                res_msg += f'，获得了技能点，当前 {diuer.get_skill_point():d}点'
             self.__group.send_msg(res_msg)
 
     @staticmethod
