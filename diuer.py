@@ -3,6 +3,7 @@
 
 import constant
 from wxpy import *
+import random
 
 
 class Diuer:
@@ -39,7 +40,7 @@ class Diuer:
     def use_skill(self):
         if self.__skill > 0:
             self.__skill -= 1
-            dmg = constant.DIU_MAX * self.__attack
+            dmg = random.randint(0, constant.DIU_MAX * self.__attack)
             self.__total_damage += dmg
             return dmg
         else:
