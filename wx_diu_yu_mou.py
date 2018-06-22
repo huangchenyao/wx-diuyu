@@ -29,7 +29,8 @@ if __name__ == '__main__':
 
     @bot.register(diu_yu_group)
     def diu_ni_yu(msg: Message):
-        print(msg)
+        if constant.PRINT_ALL:
+            print(msg)
         if diu_game.is_started():
             if msg.member == yu_mou.get_member() or msg.member == princess:
                 diu_game.save_yu(msg)
