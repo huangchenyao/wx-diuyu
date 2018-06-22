@@ -81,7 +81,7 @@ class Diu:
             yi_dao_dmg = diuer.use_skill()
             if yi_dao_dmg:
                 rest_hp = self.__yumou.injure(yi_dao_dmg)
-                self.__group.send_msg(f'{msg.member.name:s}一刀鱼某，造成{yi_dao_dmg:d}点伤害，鱼某剩余HP{rest_hp:d}')
+                self.__group.send_msg(f'{msg.member.name:s}一刀鱼某，HP-{yi_dao_dmg:d}，剩余HP {rest_hp:d}')
             else:
                 self.__group.send_msg(f'{msg.member.name:s}还没有获得一刀斩')
 
@@ -96,13 +96,13 @@ class Diu:
             diu_dmg %= (constant.DIU_MAX * diuer.get_attack())
             rest_hp = self.__yumou.injure(diu_dmg)
             diuer.add_total_damage(diu_dmg)
-            res_msg = f'{msg.member.name:s}丢鱼某，造成{diu_dmg:d}点(最大{(constant.DIU_MAX * diuer.get_attack())})伤害，鱼某剩余HP{rest_hp:d}'
+            res_msg = f'{msg.member.name:s}丢鱼某，HP-{diu_dmg:d}(MAX{(constant.DIU_MAX * diuer.get_attack())})，剩余HP {rest_hp:d}'
             if random.randint(0, 100) < (1 - pow(1 - constant.UPDATE_RATE, constant.DIU_MAX)) * 100:
                 diuer.upgrade()
-                res_msg += f'，同时升级了，攻击力+1，当前攻击力为{diuer.get_attack():d}'
+                res_msg += f'，升级了，攻击力+1，当前为{diuer.get_attack():d}'
             if random.randint(0, 100) < (1 - pow(1 - constant.SKILL_RATE, constant.DIU_MAX)) * 100:
                 diuer.add_skill()
-                res_msg += f'，同时获得了技能一刀（消耗性），剩余{diuer.get_skill():d}刀'
+                res_msg += f'，获得了技能鱼某一刀斩（消耗性），剩余{diuer.get_skill():d}刀'
             self.__group.send_msg(res_msg)
 
     @staticmethod
@@ -116,7 +116,7 @@ class Diu:
         max_dmg = 0
         max_dmg_diuer = None
         for diuer in self.__diuers:
-            if diuer.get_total_damage() > max_dmg and diuer.get_total_damage() < up:
+            if diuer.get_total_damage() >= max_dmg and diuer.get_total_damage() < up:
                 max_dmg = diuer.get_total_damage()
                 max_dmg_diuer = diuer
         return max_dmg_diuer
