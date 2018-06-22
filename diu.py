@@ -39,9 +39,9 @@ class Diu:
     def __count_down(self):
         hits = False
         while int(time.time()) < self.__start_time + constant.DIU_GAME_TIME:
-            if int(time.time()) < self.__start_time + constant.DIU_GAME_TIME - 60 and not hits:
+            if self.__start_time + constant.DIU_GAME_TIME - int(time.time()) < 60 and not hits:
                 hits = True
-                self.__group.send_msg('还剩1分钟啦')
+                self.__group.send_msg('游戏结束还剩1分钟')
             if self.__yumou.is_dead():
                 break
 
