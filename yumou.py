@@ -7,6 +7,7 @@ from wxpy import *
 class Yumou:
     __member = None
     __hp = 0
+    __angry = False
 
     def __init__(self, member: Member):
         self.__member = member
@@ -16,8 +17,10 @@ class Yumou:
         hp = self.__hp
         return f'<Yumou: member: {member}, hp: {hp}>'
 
-    def injure(self, num):
-        self.__hp -= num
+    def injure(self, dmg):
+        if self.__angry:
+            dmg = int(dmg * 0.6)
+        self.__hp -= dmg
         if self.__hp < 0:
             self.__hp = 0
         return self.__hp
@@ -34,6 +37,10 @@ class Yumou:
 
     def reset(self, hp):
         self.__hp = hp
+        self.__angry = False
 
     def get_member(self):
         return self.__member
+
+    def i_am_angry(self):
+        self.__angry = True

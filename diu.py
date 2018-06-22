@@ -3,7 +3,6 @@
 
 import time
 import threading
-import random
 from diuer import *
 from yumou import *
 from wxpy import *
@@ -31,7 +30,7 @@ class Diu:
         self.__start = True
         self.__start_time = int(time.time())
         threading.Thread(target=Diu.__count_down, args=(self,)).start()
-        self.__group.send_msg(constant.START_GAME_MSG)
+        self.__group.send_msg(constant.START_GAME_MSG + '@所有人')
 
     def is_started(self):
         return self.__start
@@ -42,6 +41,9 @@ class Diu:
             if self.__start_time + constant.DIU_GAME_TIME - int(time.time()) < 60 and not hits:
                 hits = True
                 self.__group.send_msg('游戏结束还剩1分钟')
+            if self.__yumou.get_hp() < constant.YU_MOU_HP_MAX * 0.3:
+                self.__yumou.i_am_angry()
+                self.__group.send_msg('鱼某进入狂怒状态')
             if self.__yumou.is_dead():
                 break
 
@@ -67,25 +69,36 @@ class Diu:
             if diuer.get_member() == member:
                 return diuer
 
-    def save_yu(self, msg: Message):
+    def heal_yu(self, msg: Message):
         if msg.text == constant.YU_MOU_HEAL_MSG:
             heal_hp = constant.YUMOU_HEAL_HP + int(pow(constant.YU_MOU_HP_MAX - self.__yumou.get_hp(), 0.5))
             rest_hp = self.__yumou.heal(heal_hp)
-            self.__group.send_msg(f'吨吨吨，鱼某HP +{heal_hp:d}，剩余HP {rest_hp:d}')
+            self.__group.send_msg(f'吨吨吨，鱼某HP +{heal_hp:d}，鱼某剩余HP {rest_hp:d}')
 
     def diu_yu_mou(self, msg: Message):
-        if msg.text == constant.DIU_SKILL_NAME:
+        if msg.text in constant.SKILL_NAME:
             if self.__yumou.is_dead():
                 self.__group.send_msg('鱼某已死')
                 return
 
             diuer = self.__find_diuer(msg.member)
-            yi_dao_dmg = diuer.use_skill()
-            if yi_dao_dmg:
-                rest_hp = self.__yumou.injure(yi_dao_dmg)
-                self.__group.send_msg(f'{msg.member.name:s}一刀鱼某，HP -{yi_dao_dmg:d}，剩余HP {rest_hp:d}')
-            else:
-                self.__group.send_msg(f'{msg.member.name:s}还没有获得一刀斩')
+            if msg.text == constant.SKILL_NAME['YIDAO']:
+                yi_dao_dmg = diuer.use_yidao()
+                if yi_dao_dmg:
+                    rest_hp = self.__yumou.injure(yi_dao_dmg)
+                    self.__group.send_msg(f'{msg.member.name:s}使用鱼某一刀斩，鱼某HP -{yi_dao_dmg:d}，剩余HP {rest_hp:d}')
+                else:
+                    self.__group.send_msg(f'{msg.member.name:s}技能点不足')
+            elif msg.text == constant.SKILL_NAME['FATE']:
+                fate_dmg = diuer.use_fate()
+                if fate_dmg > 0:
+                    rest_hp = self.__yumou.injure(fate_dmg)
+                    self.__group.send_msg(f'{msg.member.name:s}使用命运的抉择，结果为鱼某HP -{fate_dmg:d}，剩余HP {rest_hp:d}')
+                elif fate_dmg < 0:
+                    rest_hp = self.__yumou.heal(abs(fate_dmg))
+                    self.__group.send_msg(f'{msg.member.name:s}使用命运的抉择，结果为鱼某HP +{fate_dmg:d}，剩余HP {rest_hp:d}')
+                else:
+                    self.__group.send_msg(f'{msg.member.name:s}技能点不足')
 
         diu_dmg = Diu.__diu_yu_time(msg.text)
         if diu_dmg > 0:
@@ -98,13 +111,13 @@ class Diu:
             diu_dmg %= (constant.DIU_MAX * diuer.get_attack())
             rest_hp = self.__yumou.injure(diu_dmg)
             diuer.add_total_damage(diu_dmg)
-            res_msg = f'{msg.member.name:s}丢鱼某，HP -{diu_dmg:d}(MAX{(constant.DIU_MAX * diuer.get_attack())})，剩余HP {rest_hp:d}'
+            res_msg = f'{msg.member.name:s}丢鱼某，HP -{diu_dmg:d}(MAX{(constant.DIU_MAX * diuer.get_attack())})，鱼某剩余HP {rest_hp:d}'
             if random.randint(0, 100) < (1 - pow(1 - constant.UPDATE_RATE, constant.DIU_MAX)) * 100:
                 diuer.upgrade()
                 res_msg += f'，升级了，攻击力+1，当前 {diuer.get_attack():d}'
             if random.randint(0, 100) < (1 - pow(1 - constant.SKILL_RATE, constant.DIU_MAX)) * 100:
                 diuer.add_skill()
-                res_msg += f'，获得了技能鱼某一刀斩（消耗性），剩余{diuer.get_skill():d}刀'
+                res_msg += f'，获得了技能点，当前 {diuer.get_skill():d}点'
             self.__group.send_msg(res_msg)
 
     @staticmethod
