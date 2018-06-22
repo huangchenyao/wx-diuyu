@@ -37,15 +37,19 @@ class Diu:
         return self.__start
 
     def __count_down(self):
+        hits = False
         while int(time.time()) < self.__start_time + constant.DIU_GAME_TIME:
+            if int(time.time()) < self.__start_time + constant.DIU_GAME_TIME - 60 and not hits:
+                hits = True
+                self.__group.send_msg('还剩1分钟啦')
             if self.__yumou.is_dead():
                 break
 
         self.__start = False
         if self.__yumou.is_dead():
-            self.__group.send_msg('恭喜大家丢死鱼某')
+            self.__group.send_msg('游戏结束，恭喜大家丢死鱼某')
         else:
-            self.__group.send_msg('这都没丢死？')
+            self.__group.send_msg('游戏结束，这都没丢死？')
 
         rank_diuers = sorted(self.__diuers, key=lambda diuer: diuer.get_total_damage())
         rank_msg = '排行榜：\n'
