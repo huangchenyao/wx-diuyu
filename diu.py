@@ -97,8 +97,8 @@ class Diu:
                 diuer.upgrade()
                 res_msg += f'，同时升级了，攻击力+1，当前攻击力为{diuer.get_attack():d}'
             if random.randint(0, 100) < (1 - pow(1 - constant.SKILL_RATE, constant.DIU_MAX)) * 100:
-                res_msg += f'，同时获得了技能一刀（消耗性），剩余{diuer.get_skill():d}刀'
                 diuer.add_skill()
+                res_msg += f'，同时获得了技能一刀（消耗性），剩余{diuer.get_skill():d}刀'
             self.__group.send_msg(res_msg)
 
     @staticmethod
