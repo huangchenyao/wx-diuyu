@@ -21,13 +21,14 @@ if __name__ == '__main__':
             diuers.append(Diuer(member))
     diu_game = Diu(yu_mou, diuers, diu_yu_group)
     diu_yu_group.send_msg(constant.BOOT_FIN_MSG)
+    princess = None
 
     @bot.register(diu_yu_group)
     def diu_ni_yu(msg: Message):
+        global princess
         if constant.PRINT_ALL:
             print(msg)
 
-        princess = None
         if not diu_game.is_started():
             if msg.text == constant.START_GAME_MSG:
                 while True:
