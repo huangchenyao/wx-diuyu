@@ -117,7 +117,7 @@ class Diu:
                 res_msg += f'，升级了，攻击力+1，当前 {diuer.get_attack():d}'
             if random.randint(0, 100) < (1 - pow(1 - constant.SKILL_RATE, constant.DIU_MAX)) * 100:
                 diuer.add_skill_point()
-                res_msg += f'，获得了技能点，当前 {diuer.get_skill_point():d}点'
+                res_msg += f'，升级了，技能点+1，当前 {diuer.get_skill_point():d}点'
             self.__group.send_msg(res_msg)
 
     @staticmethod
