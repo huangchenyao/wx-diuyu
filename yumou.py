@@ -24,6 +24,7 @@ class Yumou:
 
     def heal(self, num):
         self.__hp += num
+        return self.__hp
 
     def get_hp(self):
         return self.__hp
