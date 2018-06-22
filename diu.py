@@ -55,9 +55,11 @@ class Diu:
         max_diuer1 = self.__find_max_dmg_diuer(float('inf'))
         rank_msg += (f'{1}. {max_diuer1.get_member().name:s}，共计{max_diuer1.get_total_damage():d}伤害\n')
         max_diuer2 = self.__find_max_dmg_diuer(max_diuer1.get_total_damage())
-        rank_msg += (f'{2}. {max_diuer2.get_member().name:s}，共计{max_diuer2.get_total_damage():d}伤害\n')
-        max_diuer3 = self.__find_max_dmg_diuer(max_diuer2.get_total_damage())
-        rank_msg += (f'{3}. {max_diuer3.get_member().name:s}，共计{max_diuer3.get_total_damage():d}伤害\n')
+        if max_diuer2:
+            rank_msg += (f'{2}. {max_diuer2.get_member().name:s}，共计{max_diuer2.get_total_damage():d}伤害\n')
+            max_diuer3 = self.__find_max_dmg_diuer(max_diuer2.get_total_damage())
+            if max_diuer3:
+                rank_msg += (f'{3}. {max_diuer3.get_member().name:s}，共计{max_diuer3.get_total_damage():d}伤害\n')
         self.__group.send_msg(rank_msg)
 
     def __find_diuer(self, member: Member):
@@ -116,7 +118,7 @@ class Diu:
         max_dmg = 0
         max_dmg_diuer = None
         for diuer in self.__diuers:
-            if diuer.get_total_damage() >= max_dmg and diuer.get_total_damage() < up:
+            if max_dmg < diuer.get_total_damage() < up:
                 max_dmg = diuer.get_total_damage()
                 max_dmg_diuer = diuer
         return max_dmg_diuer
