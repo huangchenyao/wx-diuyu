@@ -51,10 +51,13 @@ class Diu:
         else:
             self.__group.send_msg('游戏结束，这都没丢死？')
 
-        rank_diuers = sorted(self.__diuers, key=lambda diuer: diuer.get_total_damage())
         rank_msg = '排行榜：\n'
-        for i in range(0, 3):
-            rank_msg += (f'{i}. {rank_diuers[i].get_member().name:s}，共计{rank_diuers[i].get_total_damage():d}伤害\n')
+        max_diuer1 = self.__find_max_dmg_diuer(float('inf'))
+        rank_msg += (f'{1}. {max_diuer1.get_member().name:s}，共计{max_diuer1.get_total_damage():d}伤害\n')
+        max_diuer2 = self.__find_max_dmg_diuer(max_diuer1.get_total_damage())
+        rank_msg += (f'{2}. {max_diuer2.get_member().name:s}，共计{max_diuer2.get_total_damage():d}伤害\n')
+        max_diuer3 = self.__find_max_dmg_diuer(max_diuer2.get_total_damage())
+        rank_msg += (f'{3}. {max_diuer3.get_member().name:s}，共计{max_diuer3.get_total_damage():d}伤害\n')
         self.__group.send_msg(rank_msg)
 
     def __find_diuer(self, member: Member):
@@ -92,6 +95,7 @@ class Diu:
             diu_dmg *= diuer.get_attack()
             diu_dmg %= (constant.DIU_MAX * diuer.get_attack())
             rest_hp = self.__yumou.injure(diu_dmg)
+            diuer.add_total_damage(diu_dmg)
             res_msg = f'{msg.member.name:s}丢鱼某，造成{diu_dmg:d}点(最大{(constant.DIU_MAX * diuer.get_attack())})伤害，鱼某剩余HP{rest_hp:d}'
             if random.randint(0, 100) < (1 - pow(1 - constant.UPDATE_RATE, constant.DIU_MAX)) * 100:
                 diuer.upgrade()
@@ -107,3 +111,12 @@ class Diu:
         for i in constant.DIU_YU_MSG:
             count += text.count(i)
         return count
+
+    def __find_max_dmg_diuer(self, up):
+        max_dmg = 0
+        max_dmg_diuer = None
+        for diuer in self.__diuers:
+            if diuer.get_total_damage() > max_dmg and diuer.get_total_damage() < up:
+                max_dmg = diuer.get_total_damage()
+                max_dmg_diuer = diuer
+        return max_dmg_diuer
