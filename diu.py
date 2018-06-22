@@ -58,8 +58,11 @@ class Diu:
             if diuer.get_member() == member:
                 return diuer
 
-    def save_yu(self):
-        self.__yumou.heal(constant.YUMOU_HEAL_HP)
+    def save_yu(self, msg: Message):
+        if msg.text == constant.YU_MOU_HEAL_MSG:
+            heal_hp = constant.YUMOU_HEAL_HP + int(pow(constant.YU_MOU_HP_MAX - self.__yumou.get_hp(), 0.5))
+            self.__yumou.heal(heal_hp)
+            self.__group.send_msg(f'吨吨吨，鱼某恢复了{heal_hp:d}点HP')
 
     def diu_yu_mou(self, msg: Message):
         if msg.text == constant.DIU_SKILL_NAME:

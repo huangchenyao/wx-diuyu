@@ -1,4 +1,3 @@
-TEST_FLAG = True
 BOOT_MSG = '''>>>>>>>>>>>>>>>>>>
     丢鱼v2.2版
  （这洗一个船新版本）
@@ -15,13 +14,15 @@ BOOT_MSG = '''>>>>>>>>>>>>>>>>>>
 '''
 BOOT_FIN_MSG = '启动完毕！'
 YU_MOU_HP_MAX = pow(10, 4)
+DIU_GAME_TIME = 60 * 5
 START_GAME_MSG = '开始丢鱼'
 DIU_YU_MSG = ['丢鱼', '丢🐟', '丢🐠', '丢🎣',
               '丢你鱼', '丢你🐟', '丢你🐠', '丢你🎣',
               '草泥鱼', '草泥🐟', '草泥🐠', '草泥🎣']
-DIU_GAME_TIME = 60 * 5
 DIU_SKILL_NAME = '鱼某一刀斩'
+YU_MOU_HEAL_MSG = '求丢'
 DIU_MAX = 100
 UPDATE_RATE = 0.005
 SKILL_RATE = 0.002
 YUMOU_HEAL_HP = 10
+PRINCESS_NAME = '许钧发'

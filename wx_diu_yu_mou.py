@@ -15,6 +15,7 @@ if __name__ == '__main__':
     diu_yu_group = list(filter(lambda x: x.self.name == 'FFGM', bot.groups()))[0]
     diu_yu_group.send_msg(constant.BOOT_MSG)
     yu_mou = Yumou(bot.friends().search('余凯欢')[0])
+    princess = bot.friends().search(constant.PRINCESS_NAME)[0]
     diuers = []
     for member in diu_yu_group.members:
         if member != yu_mou:
@@ -26,12 +27,13 @@ if __name__ == '__main__':
     def diu_ni_yu(msg: Message):
         print(msg)
         if diu_game.is_started():
-            if msg.member == yu_mou.get_member():
-                diu_game.save_yu()
+            if msg.member == yu_mou.get_member() or msg.member == princess:
+                diu_game.save_yu(msg)
             else:
                 diu_game.diu_yu_mou(msg)
         else:
             if msg.text == constant.START_GAME_MSG:
                 diu_game.start()
+                diu_yu_group.send_msg(f'本轮公主为：{princess.name:s}')
 
     embed()
