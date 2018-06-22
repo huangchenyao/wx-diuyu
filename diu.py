@@ -107,8 +107,9 @@ class Diu:
                 return
 
             diuer = self.__find_diuer(msg.member)
+            if diu_dmg > constant.DIU_MAX:
+                diu_dmg = constant.DIU_MAX
             diu_dmg *= diuer.get_attack()
-            diu_dmg %= (constant.DIU_MAX * diuer.get_attack())
             rest_hp = self.__yumou.injure(diu_dmg)
             diuer.add_total_damage(diu_dmg)
             res_msg = f'{msg.member.name:s}丢鱼某，HP -{diu_dmg:d}(MAX{(constant.DIU_MAX * diuer.get_attack())})，鱼某剩余HP {rest_hp:d}'

@@ -28,12 +28,7 @@ if __name__ == '__main__':
             print(msg)
 
         princess = None
-        if diu_game.is_started():
-            if msg.member == yu_mou.get_member() or msg.member == princess:
-                diu_game.heal_yu(msg)
-            else:
-                diu_game.diu_yu_mou(msg)
-        else:
+        if not diu_game.is_started():
             if msg.text == constant.START_GAME_MSG:
                 while True:
                     princess_index = random.randint(0, len(diu_yu_group.members))
@@ -42,5 +37,10 @@ if __name__ == '__main__':
                         break
                 diu_game.start()
                 diu_yu_group.send_msg(f'本轮公主为：@{princess.name:s}')
+        else:
+            if msg.member == yu_mou.get_member() or msg.member == princess:
+                diu_game.heal_yu(msg)
+            else:
+                diu_game.diu_yu_mou(msg)
 
     embed()
