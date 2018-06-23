@@ -96,7 +96,7 @@ class Diu:
                     self.__group.send_msg(f'{msg.member.name:s}使用命运的抉择，结果为鱼某HP -{fate_dmg:d}，剩余HP {rest_hp:d}')
                 elif fate_dmg < 0:
                     rest_hp = self.__yumou.heal(abs(fate_dmg))
-                    self.__group.send_msg(f'{msg.member.name:s}使用命运的抉择，结果为鱼某HP +{fate_dmg:d}，剩余HP {rest_hp:d}')
+                    self.__group.send_msg(f'{msg.member.name:s}使用命运的抉择，结果为鱼某HP +{abs(fate_dmg):d}，剩余HP {rest_hp:d}')
                 else:
                     self.__group.send_msg(f'{msg.member.name:s}技能点不足')
 

@@ -1,5 +1,5 @@
 BOOT_MSG = '''>>>>>>>>>>>>>>>>>>
-    丢鱼v2.4版
+    丢鱼v2.5版
     i. 技能统一改成技能点形式
    ii. "鱼某一刀斩"消耗1点
   iii. 新增技能"命运的抉择"消耗5点
@@ -14,7 +14,7 @@ BOOT_MSG = '''>>>>>>>>>>>>>>>>>>
 启动中......
 '''
 BOOT_FIN_MSG = '启动完毕！'
-YU_MOU_HP_MAX = pow(10, 5)
+YU_MOU_HP_MAX = pow(10, 5) / 2
 DIU_GAME_TIME = 60 * 10
 START_GAME_MSG = '开始丢鱼'
 DIU_YU_MSG = ['丢鱼', '丢🐟', '丢🐠', '丢🎣',
@@ -30,7 +30,7 @@ SKILL_COST = {
 }
 YU_MOU_HEAL_MSG = '求丢'
 DIU_MAX = 100
-UPDATE_RATE = 0.005
-SKILL_RATE = 0.0025
+UPDATE_RATE = 0.01
+SKILL_RATE = 0.005
 YUMOU_HEAL_HP = 10
 PRINT_ALL = False
