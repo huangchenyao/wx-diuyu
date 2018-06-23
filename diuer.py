@@ -49,7 +49,7 @@ class Diuer:
     def use_fate(self):
         if self.__skill_point >= constant.SKILL_COST['FATE']:
             self.__skill_point -= constant.SKILL_COST['FATE']
-            dmg = random.randint(-self.__attack, self.__attack) * constant.DIU_MAX * 10
+            dmg = random.randint(-self.__attack, self.__attack) * constant.DIU_MAX * 10 + 1
             self.__total_damage += dmg
             return dmg
         else:

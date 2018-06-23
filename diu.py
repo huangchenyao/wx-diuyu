@@ -37,11 +37,13 @@ class Diu:
 
     def __count_down(self):
         hits = False
+        angry = False
         while int(time.time()) < self.__start_time + constant.DIU_GAME_TIME:
-            if self.__start_time + constant.DIU_GAME_TIME - int(time.time()) < 60 and not hits:
+            if self.__start_time + constant.DIU_GAME_TIME - int(time.time()) < constant.DIU_GAME_TIME / 5 and not hits:
                 hits = True
-                self.__group.send_msg('游戏结束还剩1分钟')
-            if self.__yumou.get_hp() < constant.YU_MOU_HP_MAX * 0.3:
+                self.__group.send_msg(f'游戏结束还剩{constant.DIU_GAME_TIME / 5}分钟')
+            if self.__yumou.get_hp() < constant.YU_MOU_HP_MAX * 0.3 and not angry:
+                angry = True
                 self.__yumou.i_am_angry()
                 self.__group.send_msg('鱼某进入狂怒状态')
             if self.__yumou.is_dead():
