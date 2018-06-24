@@ -55,6 +55,13 @@ class Diuer:
         else:
             return 0
 
+    def use_suoha(self):
+        suoha_dmg = 0
+        suoha_dmg += self.__skill_point * self.__attack * constant.DIU_MAX
+        self.__skill_point = -9999
+        self.__attack = 0
+        return suoha_dmg
+
     def add_total_damage(self, damage):
         self.__total_damage += damage
 

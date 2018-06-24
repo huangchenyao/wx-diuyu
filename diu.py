@@ -39,9 +39,10 @@ class Diu:
         hits = False
         angry = False
         while int(time.time()) < self.__start_time + constant.DIU_GAME_TIME:
+            time.sleep(1)
             if self.__start_time + constant.DIU_GAME_TIME - int(time.time()) < constant.DIU_GAME_TIME / 5 and not hits:
                 hits = True
-                self.__group.send_msg(f'游戏结束还剩{constant.DIU_GAME_TIME / 5}分钟')
+                self.__group.send_msg(f'游戏结束还剩{constant.DIU_GAME_TIME / 5:.0f}s')
             if self.__yumou.get_hp() < constant.YU_MOU_HP_MAX * 0.3 and not angry:
                 angry = True
                 self.__yumou.i_am_angry()
@@ -101,6 +102,9 @@ class Diu:
                     self.__group.send_msg(f'{msg.member.name:s}使用命运的抉择，结果为鱼某HP +{abs(fate_dmg):d}，剩余HP {rest_hp:d}')
                 else:
                     self.__group.send_msg(f'{msg.member.name:s}技能点不足')
+            elif msg.text == constant.SKILL_NAME['SUOHA']:
+                suoha_dmg = diuer.use_suoha()
+                self.__group.send_msg(f'{msg.member.name:s}梭哈，攻击力变为{diuer.get_attack():d}，技能点变为{diuer.get_skill_point():d}，鱼某HP {suoha_dmg:d}，剩余HP {rest_hp:d}')
 
         diu_dmg = Diu.__diu_yu_time(msg.text)
         if diu_dmg > 0:
@@ -134,7 +138,19 @@ class Diu:
         max_dmg = 0
         max_dmg_diuer = None
         for diuer in self.__diuers:
-            if max_dmg < diuer.get_total_damage() < up:
+            if max_dmg <= diuer.get_total_damage() < up:
                 max_dmg = diuer.get_total_damage()
                 max_dmg_diuer = diuer
         return max_dmg_diuer
+
+    def nai_niu_gua(self, member, nai_niu):
+        if member == nai_niu:
+            diuer = self.__find_diuer(nai_niu)
+            for i in range(10):
+                diuer.upgrade()
+            for i in range(5):
+                diuer.add_skill_point()
+            self.__group.send_msg(f'奶牛升级了，攻击力+10，当前 {diuer.get_attack():d}，技能点+5，当前 {diuer.get_skill_point():d}点')
+        else:
+            self.__group.send_msg('你是个🔨的奶牛')
+        pass
